@@ -1,18 +1,27 @@
 package org.emp.gl.clients ; 
 
+import org.emp.gl.timer.service.TimerChangeListener;
 import org.emp.gl.timer.service.TimerService ; 
+// AJOUTER CETTE LIGNE EN HAUT
+import java.beans.PropertyChangeEvent;
+
+public class Horloge implements TimerChangeListener{
+
+    private String name ; 
+    private TimerService timerService ; 
 
 
-public class Horloge {
-
-    String name; 
-    TimerService timerService ; 
-
-
-    public Horloge (String name) {
+    public Horloge (String name, TimerService timerService) {
         this.name = name ; 
-
-        System.out.println ("Horloge "+name+" initialized!") ;
+        this.timerService = timerService;
+        this.timerService.addTimeChangeListener(this);  // s'abonner
+        System.out.println("Horloge " + name + " initialized!");
+    }
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+       if (TimerChangeListener.SECONDE_PROP.equals(evt.getPropertyName())) {
+        afficherHeure();
+     }
     }
 
     public void afficherHeure () {

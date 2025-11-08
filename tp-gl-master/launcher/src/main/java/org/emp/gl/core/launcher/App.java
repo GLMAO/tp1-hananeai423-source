@@ -1,24 +1,36 @@
 package org.emp.gl.core.launcher;
 
-import org.emp.gl.clients.Horloge ;
+import org.emp.gl.time.service.impl.DummyTimeServiceImpl;
+import org.emp.gl.clients.Horloge;
+import org.emp.gl.clients.CompteARebours;
+import org.emp.gl.clients.HorlogeGUI;
+import org.emp.gl.timer.service.TimerService;
 
-/**
- * Hello world!
- *
- */
 public class App {
 
     public static void main(String[] args) {
-
-        testDuTimeService();
+        testTout();
     }
 
-    private static void testDuTimeService() {
-        Horloge horloge = new Horloge("Num 1") ;
-    }
+    // FONCTION DE TEST FINALE
+   private static void testTout() {
+    System.out.println("DÉMARRAGE DU TEST COMPLET...\n");
 
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
+    TimerService timerService = new DummyTimeServiceImpl();
+
+    // Créer les horloges console
+    new Horloge("Horloge Console 1", timerService);
+    new Horloge("Horloge Console 2", timerService);
+
+    // Créer les compteurs à rebours
+    new CompteARebours("CR 5s", timerService, 5);
+    new CompteARebours("CR 8s", timerService, 8);
+    new CompteARebours("CR 3s", timerService, 3);
+
+    // Lancer la GUI
+    HorlogeGUI gui = new HorlogeGUI(timerService);
+    gui.setVisible(true);
+
+    System.out.println("Application démarrée - La GUI est ouverte");
+}
 }
